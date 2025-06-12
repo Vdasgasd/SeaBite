@@ -13,9 +13,6 @@
 
             <!-- Desktop Menu -->
             <div class="sm:flex sm:items-center sm:space-x-6">
-                <a href="{{-- route('menu') --}}" class="text-sm font-medium hover:text-blue-600 transition">
-                    Menu
-                </a>
 
                 @if ( Auth::user()->role == 'cust' )
                 <a href="{{-- route('reservasi') --}}" class="text-sm font-medium hover:text-blue-600 transition">

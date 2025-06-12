@@ -5,26 +5,27 @@ use Illuminate\Support\Facades\Route;
 
 // Admin Controllers
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Admin\LaporanController;
 use App\Http\Controllers\Admin\IkanController as AdminIkanController;
 use App\Http\Controllers\Admin\MejaController as AdminMejaController;
 use App\Http\Controllers\Admin\MenuController as AdminMenuController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Customer\MenuController as CustomerMenuController;
-use App\Http\Controllers\Kasir\InvoiceController as KasirInvoiceController;
 
 // Kitchen Controllers
+use App\Http\Controllers\Kasir\InvoiceController as KasirInvoiceController;
 use App\Http\Controllers\Kasir\PesananController as KasirPesananController;
-use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 
 // Kasir Controllers
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Kasir\DashboardController as KasirDashboardController;
 use App\Http\Controllers\Kasir\ReservasiController as KasirReservasiController;
 use App\Http\Controllers\Kitchen\PesananController as KitchenPesananController;
-use App\Http\Controllers\Admin\MetodeMasakController as AdminMetodeMasakController;
 
 // Customer Controllers
+use App\Http\Controllers\Admin\MetodeMasakController as AdminMetodeMasakController;
 use App\Http\Controllers\Kitchen\DashboardController as KitchenDashboardController;
-use App\Http\Controllers\Admin\KategoriMenuController as AdminKategoriMenuController;
+use App\Http\Controllers\Admin\KategoriController as AdminKategoriController;
 use App\Http\Controllers\Customer\DashboardController as CustomerDashboardController;
 use App\Http\Controllers\Customer\ReservasiController as CustomerReservasiController;
 
@@ -60,23 +61,20 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
-    // Menu Management
     Route::resource('menu', AdminMenuController::class);
 
-    // Ikan Management
     Route::resource('ikan', AdminIkanController::class)->names('ikan');
 
-    // Kategori Menu Management
-    Route::resource('kategori-menu', AdminKategoriMenuController::class);
+    Route::resource('kategori', AdminKategoriController::class);
 
-    // Metode Masak Management
-    Route::resource('metode-masak', AdminMetodeMasakController::class);
+   Route::resource('metode-masak', AdminMetodeMasakController::class)
+    ->parameters(['metode-masak' => 'metode']);
 
-    // Meja Management
     Route::resource('meja', AdminMejaController::class);
 
-    // User Management
     Route::resource('user', AdminUserController::class);
+
+    Route::get('/laporan/penjualan', [LaporanController::class, 'penjualan'])->name('laporan.penjualan');
 });
 
 // Kitchen Routes

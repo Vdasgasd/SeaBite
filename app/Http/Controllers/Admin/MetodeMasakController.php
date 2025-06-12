@@ -34,7 +34,7 @@ class MetodeMasakController extends Controller
     }
 
     public function edit(MetodeMasak $metode){
-        return view('admin.metode-masak', compact('metode'));
+        return view('admin.metode-masak.edit', compact('metode'));
     }
     public function update(Request $request, MetodeMasak $metode)
     {

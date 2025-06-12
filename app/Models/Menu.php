@@ -33,7 +33,7 @@ class Menu extends Model
     // Relationships
     public function kategori()
     {
-        return $this->belongsTo(KategoriMenu::class, 'kategori_id', 'kategori_id');
+        return $this->belongsTo(Kategori::class, 'kategori_id', 'kategori_id');
     }
 
     public function ikan()

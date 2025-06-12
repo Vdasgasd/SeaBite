@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Ikan;
 use App\Models\Menu;
-use App\Models\KategoriMenu;
+use App\Models\Kategori;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -22,7 +22,7 @@ class MenuController extends Controller
         $validated = $request->validate([
             'nama_menu' => 'required|string|max:100',
             'deskripsi' => 'nullable|string',
-            'kategori_id' => 'required|exists:kategori_menu,kategori_id',
+            'kategori_id' => 'required|exists:kategori,kategori_id',
             'ikan_id' => 'nullable|exists:ikan,ikan_id',
             'tipe_harga' => 'required|in:satuan,berat',
             'harga' => 'nullable|numeric|min:0',
@@ -47,7 +47,7 @@ class MenuController extends Controller
         $validated = $request->validate([
             'nama_menu' => 'required|string|max:100',
             'deskripsi' => 'nullable|string',
-            'kategori_id' => 'required|exists:kategori_menu,kategori_id',
+            'kategori_id' => 'required|exists:kategori,kategori_id',
             'ikan_id' => 'nullable|exists:ikan,ikan_id',
             'tipe_harga' => 'required|in:satuan,berat',
             'harga' => 'nullable|numeric|min:0',
@@ -62,14 +62,14 @@ class MenuController extends Controller
 
       public function create()
     {
-        $kategoris = KategoriMenu::all();
+        $kategoris = Kategori::all();
         $ikans = Ikan::all();
         return view('admin.menu.create', compact('kategoris', 'ikans'));
     }
 
     public function edit(Menu $menu)
     {
-        $kategoris = KategoriMenu::all();
+        $kategoris = Kategori::all();
         $ikans = Ikan::all();
         return view('admin.menu.edit', compact('menu', 'kategoris', 'ikans'));
     }

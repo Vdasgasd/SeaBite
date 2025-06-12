@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
 use App\Models\Menu;
-use App\Models\KategoriMenu;
+use App\Models\Kategori;
 use Illuminate\Http\Request;
 
 class MenuController extends Controller
@@ -32,7 +32,7 @@ class MenuController extends Controller
 
     public function kategori()
     {
-        $kategori = KategoriMenu::all();
+        $kategori = Kategori::all();
         return response()->json($kategori);
     }
 }

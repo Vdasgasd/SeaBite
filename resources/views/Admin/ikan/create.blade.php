@@ -29,7 +29,7 @@
 
                         <div class="flex items-center justify-end">
                             <a href="{{ route('admin.ikan.index') }}" class="text-gray-600 hover:text-gray-900 mr-4">Batal</a>
-                            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-black font-bold py-2 px-4 rounded">
+                            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                                 Simpan
                             </button>
                         </div>

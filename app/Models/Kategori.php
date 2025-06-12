@@ -6,11 +6,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class KategoriMenu extends Model
+class Kategori extends Model
 {
     use HasFactory;
 
-    protected $table = 'kategori_menu';
+    protected $table = 'kategori';
     protected $primaryKey = 'kategori_id';
     public $timestamps = false;
 

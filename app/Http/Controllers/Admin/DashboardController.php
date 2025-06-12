@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+
 // Import model yang relevan
+use App\Models\Invoice;
 use App\Models\Menu;
 use App\Models\Ikan;
 use App\Models\Meja;
@@ -23,6 +25,7 @@ class DashboardController extends Controller
         $totalIkan = Ikan::count();
         $totalMeja = Meja::count();
         $totalUser = User::count();
+        $totalInvoice = Invoice::count();
 
         return view('admin.dashboard', [
             'user'       => $user,
@@ -30,6 +33,7 @@ class DashboardController extends Controller
             'totalIkan'  => $totalIkan,
             'totalMeja'  => $totalMeja,
             'totalUser'  => $totalUser,
+            'totalInvoice' => $totalInvoice,
         ]);
     }
 }

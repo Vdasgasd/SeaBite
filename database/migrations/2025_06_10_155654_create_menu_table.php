@@ -13,7 +13,7 @@ return new class extends Migration
             $table->string('nama_menu', 100);
             $table->text('deskripsi')->nullable();
 
-            $table->foreignId('kategori_id')->constrained('kategori_menu', 'kategori_id')->restrictOnDelete()->cascadeOnUpdate();
+            $table->foreignId('kategori_id')->constrained('kategori', 'kategori_id')->restrictOnDelete()->cascadeOnUpdate();
 
             $table->foreignId('ikan_id')->nullable()->constrained('ikan', 'ikan_id')->nullOnDelete()->cascadeOnUpdate();
 

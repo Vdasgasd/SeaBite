@@ -10,7 +10,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <div class="flex justify-end mb-4">
-                        <a href="{{ route('admin.kategori-menu.create') }}" class="text-blue-500 bg-blue-500 hover:bg-blue-700 font-bold py-2 px-4 rounded">
+                        <a href="{{ route('admin.kategori.create') }}" class="text-white bg-blue-500 hover:bg-blue-700 font-bold py-2 px-4 rounded">
                             Tambah Kategori Baru
                         </a>
                     </div>
@@ -35,8 +35,8 @@
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $item->nama_kategori }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <a href="{{ route('admin.kategori-menu.edit', $item) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
-                                        <form action="{{ route('admin.kategori-menu.destroy', $item) }}" method="POST" class="inline-block ml-2" onsubmit="return confirm('Apakah Anda yakin ingin menghapus kategori ini?');">
+                                        <a href="{{ route('admin.kategori.edit', $item) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                                        <form action="{{ route('admin.kategori.destroy', $item) }}" method="POST" class="inline-block ml-2" onsubmit="return confirm('Apakah Anda yakin ingin menghapus kategori ini?');">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="text-red-600 hover:text-red-900">Hapus</button>

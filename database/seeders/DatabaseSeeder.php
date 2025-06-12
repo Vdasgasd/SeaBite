@@ -44,5 +44,12 @@ class DatabaseSeeder extends Seeder
             'role'=> 'cust',
             'password' => Hash::make('password'),
         ]);
+
+
+
+
+
+
+
     }
 }
