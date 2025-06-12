@@ -21,6 +21,7 @@ return new class extends Migration
             $table->decimal('harga', 10, 2)->nullable();
             $table->decimal('harga_per_100gr', 10, 2)->nullable();
             $table->string('gambar_url')->nullable();
+            $table->timestamps();
         });
     }
 

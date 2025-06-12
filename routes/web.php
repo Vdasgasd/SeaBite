@@ -4,34 +4,36 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 // Admin Controllers
+use App\Http\Controllers\MenuController;
+use App\Http\Controllers\LandingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\LaporanController;
 use App\Http\Controllers\Admin\IkanController as AdminIkanController;
 use App\Http\Controllers\Admin\MejaController as AdminMejaController;
 use App\Http\Controllers\Admin\MenuController as AdminMenuController;
+
+// Kitchen Controllers
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Customer\MenuController as CustomerMenuController;
 
-// Kitchen Controllers
+// Kasir Controllers
 use App\Http\Controllers\Kasir\InvoiceController as KasirInvoiceController;
 use App\Http\Controllers\Kasir\PesananController as KasirPesananController;
-
-// Kasir Controllers
+use App\Http\Controllers\Admin\KategoriController as AdminKategoriController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+
+// Customer Controllers
 use App\Http\Controllers\Kasir\DashboardController as KasirDashboardController;
 use App\Http\Controllers\Kasir\ReservasiController as KasirReservasiController;
 use App\Http\Controllers\Kitchen\PesananController as KitchenPesananController;
-
-// Customer Controllers
 use App\Http\Controllers\Admin\MetodeMasakController as AdminMetodeMasakController;
 use App\Http\Controllers\Kitchen\DashboardController as KitchenDashboardController;
-use App\Http\Controllers\Admin\KategoriController as AdminKategoriController;
 use App\Http\Controllers\Customer\DashboardController as CustomerDashboardController;
 use App\Http\Controllers\Customer\ReservasiController as CustomerReservasiController;
 
-Route::get('/', function () {
-    return view('landing');
-});
+Route::get('/', [LandingController::class, 'landing'])->name('landing');
+Route::get('/menu', [MenuController::class, 'index'])->name('menu.index');
+
 
 // Redirect dashboard berdasarkan role
 Route::get('/dashboard', function () {
