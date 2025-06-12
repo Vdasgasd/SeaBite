@@ -30,7 +30,10 @@ class MasterMenuSeeder extends Seeder {
         $ikanNames = ['Tuna', 'Salmon', 'Kakap', 'Gurame', 'Lele', 'Patin', 'Bandeng', 'Kembung', 'Cumi', 'Udang', 'Kepiting', 'Kerang'];
         $ikanIds = [];
         foreach ($ikanNames as $name) {
-            $ikan = Ikan::firstOrCreate(['nama_ikan' => $name]);
+            $ikan = Ikan::firstOrCreate(
+                ['nama_ikan' => $name],
+                ['stok_gram' => $faker->numberBetween(100, 10000)]
+            );
             $ikanIds[] = $ikan->ikan_id;
         }
 

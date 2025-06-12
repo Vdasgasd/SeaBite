@@ -13,7 +13,6 @@ class MenuController extends Controller
     public function index()
     {
         $menus = Menu::with(['kategori', 'ikan'])->get();
-        // Mengirim data ke view 'admin.menu.index'
         return view('admin.menu.index', compact('menus'));
     }
 
@@ -31,15 +30,7 @@ class MenuController extends Controller
         ]);
 
         Menu::create($validated);
-        // Redirect ke halaman index dengan pesan sukses
         return redirect()->route('admin.menu.index')->with('success', 'Menu berhasil ditambahkan.');
-    }
-
-    public function show(Menu $menu)
-    {
-        // Memuat relasi dan mengirim data ke view 'admin.menu.show'
-        $menu->load(['kategori', 'ikan']);
-        return view('admin.menu.show', compact('menu'));
     }
 
     public function update(Request $request, Menu $menu)
@@ -56,7 +47,6 @@ class MenuController extends Controller
         ]);
 
         $menu->update($validated);
-        // Redirect ke halaman index dengan pesan sukses
         return redirect()->route('admin.menu.index')->with('success', 'Menu berhasil diperbarui.');
     }
 
@@ -77,7 +67,6 @@ class MenuController extends Controller
     public function destroy(Menu $menu)
     {
         $menu->delete();
-        // Redirect ke halaman index dengan pesan sukses
         return redirect()->route('admin.menu.index')->with('success', 'Menu berhasil dihapus.');
     }
 }

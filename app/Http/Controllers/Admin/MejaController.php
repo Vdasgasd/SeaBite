@@ -11,8 +11,7 @@ class MejaController extends Controller {
 
     public function index() {
         $meja = Meja::all();
-        $users = User::all(); // Ambil data user
-
+        $users = User::all();
         return view('admin.meja.index', compact('meja', 'users'));
     }
 
@@ -24,14 +23,9 @@ class MejaController extends Controller {
         ]);
 
         Meja::create($validated);
-        // Redirect ke halaman index dengan pesan sukses
         return redirect()->route('admin.meja.index')->with('success', 'Meja berhasil ditambahkan.');
     }
 
-    public function show(Meja $meja) {
-        // Menampilkan detail di view 'admin.meja.show'
-        return view('admin.meja.show', compact('meja'));
-    }
 
     public function create(Request $request) {
         return view('admin.meja.create');
@@ -50,13 +44,11 @@ class MejaController extends Controller {
         ]);
 
         $meja->update($validated);
-        // Redirect ke halaman index dengan pesan sukses
         return redirect()->route('admin.meja.index')->with('success', 'Meja berhasil diperbarui.');
     }
 
     public function destroy(Meja $meja) {
         $meja->delete();
-        // Redirect ke halaman index dengan pesan sukses
         return redirect()->route('admin.meja.index')->with('success', 'Meja berhasil dihapus.');
     }
 }

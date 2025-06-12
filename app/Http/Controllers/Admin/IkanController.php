@@ -31,10 +31,6 @@ class IkanController extends Controller
         return redirect()->route('admin.ikan.index')->with('success', 'Data ikan berhasil ditambahkan.');
     }
 
-    public function show(Ikan $ikan)
-    {
-        return view('admin.ikan.show', compact('ikan'));
-    }
 
     public function edit(Ikan $ikan)
     {

@@ -12,7 +12,6 @@ class UserController extends Controller
     public function index()
     {
         $users = User::all();
-        // Mengirim data ke view 'admin.user.index'
         return view('admin.user.index', compact('users'));
     }
 
@@ -28,21 +27,13 @@ class UserController extends Controller
         $validated['password'] = Hash::make($validated['password']);
         User::create($validated);
 
-        // Redirect ke halaman index dengan pesan sukses
         return redirect()->route('admin.user.index')->with('success', 'User berhasil ditambahkan.');
     }
 
 
-    public function create(Request $request){
+    public function create(){
         return view('admin.user.create');
     }
-
-    public function show(User $user)
-    {
-        // Menampilkan detail di view 'admin.user.show'
-        return view('admin.user.show', compact('user'));
-    }
-
 
     public function edit(User $user){
         return view('admin.user.edit', compact('user'));
@@ -63,14 +54,12 @@ class UserController extends Controller
         }
 
         $user->update($validated);
-        // Redirect ke halaman index dengan pesan sukses
         return redirect()->route('admin.user.index')->with('success', 'User berhasil diperbarui.');
     }
 
     public function destroy(User $user)
     {
         $user->delete();
-        // Redirect ke halaman index dengan pesan sukses
         return redirect()->route('admin.user.index')->with('success', 'User berhasil dihapus.');
     }
 }
