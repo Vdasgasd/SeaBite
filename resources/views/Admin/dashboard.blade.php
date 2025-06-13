@@ -18,7 +18,6 @@
                     </div>
                 </div>
 
-
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
                     <div class="p-6 text-gray-900">
                         <div class="flex items-center">
@@ -103,7 +102,17 @@
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6">
                         <h3 class="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <a href="{{ route('admin.reservasi.index') }}"
+                                class="flex items-center p-4 bg-yellow-50 rounded-lg hover:bg-yellow-100 transition duration-200">
+                                <i class="fas fa-calendar-check text-yellow-500 text-xl mr-3"></i>
+                                <div>
+                                    <h4 class="font-medium text-gray-900">Manager Reservasi</h4>
+                                    <p class="text-sm text-gray-600">Lihat semua reservasi</p>
+                                </div>
+                            </a>
+
                             <a href="{{ route('admin.menu.index') }}"
                                 class="flex items-center p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition duration-200">
                                 <i class="fas fa-utensils text-blue-500 text-xl mr-3"></i>
@@ -166,10 +175,10 @@
                                     <p class="text-sm text-gray-600">Lihat riwayat transaksi dan pendapatan</p>
                                 </div>
                             </a>
-
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
 </x-app-layout>

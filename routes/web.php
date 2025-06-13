@@ -3,35 +3,31 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-// Guest Controller
 use App\Http\Controllers\MenuController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LandingController;
+use App\Http\Controllers\ProfileController;
 
-// Admin Controllers
 use App\Http\Controllers\Admin\LaporanController;
+use App\Http\Controllers\Admin\ReservasiController as AdminReservasiController;
 use App\Http\Controllers\Admin\IkanController as AdminIkanController;
-use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\MejaController as AdminMejaController;
 use App\Http\Controllers\Admin\MenuController as AdminMenuController;
-use App\Http\Controllers\Admin\KategoriController as AdminKategoriController;
-use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
-use App\Http\Controllers\Admin\MetodeMasakController as AdminMetodeMasakController;
-
-// Kitchen Controllers
-use App\Http\Controllers\Kitchen\PesananController as KitchenPesananController;
-use App\Http\Controllers\Kitchen\DashboardController as KitchenDashboardController;
-
-// Kasir Controllers
+use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Customer\MenuController as CustomerMenuController;
 use App\Http\Controllers\Kasir\InvoiceController as KasirInvoiceController;
+
 use App\Http\Controllers\Kasir\PesananController as KasirPesananController;
+use App\Http\Controllers\Admin\KategoriController as AdminKategoriController;
+
+use App\Http\Controllers\Customer\OrderController as CustomerOrderController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Kasir\DashboardController as KasirDashboardController;
 
-// Customer Controllers
-use App\Http\Controllers\Customer\MenuController as CustomerMenuController;
-use App\Http\Controllers\Customer\OrderController as CustomerOrderController;
-use App\Http\Controllers\Customer\ReservasiController as CustomerReservasiController;
+use App\Http\Controllers\Kitchen\PesananController as KitchenPesananController;
+use App\Http\Controllers\Admin\MetodeMasakController as AdminMetodeMasakController;
+use App\Http\Controllers\Kitchen\DashboardController as KitchenDashboardController;
 use App\Http\Controllers\Customer\DashboardController as CustomerDashboardController;
+use App\Http\Controllers\Customer\ReservasiController as CustomerReservasiController;
 
 
 Route::get('/', [LandingController::class, 'landing'])->name('landing');
@@ -82,6 +78,11 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::resource('meja', AdminMejaController::class);
     Route::resource('user', AdminUserController::class);
     Route::get('/laporan/penjualan', [LaporanController::class, 'penjualan'])->name('laporan.penjualan');
+
+    Route::resource('reservasi', AdminReservasiController::class);
+    Route::patch('reservasi/{reservasi}/hadir', [AdminReservasiController::class, 'markAsHadir'])->name('reservasi.hadir');
+    Route::patch('reservasi/{reservasi}/batal', [AdminReservasiController::class, 'markAsBatal'])->name('reservasi.batal');
+    Route::patch('reservasi/{reservasi}/konfirmasi', [AdminReservasiController::class, 'markAsDikonfirmasi'])->name('reservasi.konfirmasi');
 });
 
 
@@ -147,10 +148,8 @@ Route::middleware(['auth', 'role:cust'])->prefix('customer')->name('customer.')-
     Route::get('/kategori', [CustomerMenuController::class, 'kategori'])->name('kategori');
 
     // Reservasi untuk Customer
-    Route::get('/reservasi', [CustomerReservasiController::class, 'index'])->name('reservasi.index');
-    Route::post('/reservasi', [CustomerReservasiController::class, 'store'])->name('reservasi.store');
-    Route::get('/reservasi/{reservasi}', [CustomerReservasiController::class, 'show'])->name('reservasi.show');
-    Route::get('/available-tables', [CustomerReservasiController::class, 'availableTables'])->name('availableTables');
+    Route::resource('reservasi', CustomerReservasiController::class);
+     Route::get('reservasi-check', [CustomerReservasiController::class, 'availableTables'])->name('reservasi.availableTables');
 });
 
 

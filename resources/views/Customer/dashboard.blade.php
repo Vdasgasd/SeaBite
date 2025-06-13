@@ -100,6 +100,54 @@
                             @endif
                         </div>
 
+                        <!-- Reservasi Meja (hanya untuk user login) -->
+                        @if(!$isGuest)
+                        <div class="mb-8">
+                            <div class="flex justify-between items-center border-b pb-2 mb-4">
+                                <h4 class="text-xl font-semibold">Reservasi Meja</h4>
+                                <a href="{{ route('customer.reservasi.create') }}" class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
+                                    + Buat Reservasi
+                                </a>
+                            </div>
+
+                            @isset($reservasiTerakhir)
+                                <div class="bg-gray-50 p-4 rounded-lg border">
+                                    <div class="flex flex-wrap justify-between items-center gap-4">
+                                        <div>
+                                            <p class="font-semibold text-gray-800">
+                                                @if($reservasiTerakhir->waktu_reservasi > now())
+                                                    Reservasi Mendatang
+                                                @else
+                                                    Reservasi Terakhir
+                                                @endif
+                                            </p>
+                                            <p class="text-sm text-gray-600">
+                                                Meja {{ $reservasiTerakhir->meja->nomor_meja }} &bull; {{ \Carbon\Carbon::parse($reservasiTerakhir->waktu_reservasi)->isoFormat('dddd, D MMMM YYYY, HH:mm') }}
+                                            </p>
+                                        </div>
+                                        <div class="flex-shrink-0">
+                                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
+                                                @if($reservasiTerakhir->status == 'dipesan') bg-blue-100 text-blue-800
+                                                @elseif($reservasiTerakhir->status == 'selesai') bg-green-100 text-green-800
+                                                @elseif($reservasiTerakhir->status == 'batal') bg-red-100 text-red-800
+                                                @endif">
+                                                {{ ucfirst($reservasiTerakhir->status) }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                     <a href="{{ route('customer.reservasi.index') }}" class="text-sm font-semibold text-blue-600 hover:underline mt-4 inline-block">
+                                         Lihat Semua Riwayat Reservasi &rarr;
+                                     </a>
+                                </div>
+                            @else
+                                <div class="text-center py-8 text-gray-500 bg-gray-50 rounded-lg border">
+                                    <i class="far fa-calendar-times fa-2x mb-3 text-gray-400"></i>
+                                    <p>Anda belum memiliki riwayat reservasi.</p>
+                                </div>
+                            @endisset
+                        </div>
+                        @endif
+
                         <!-- Riwayat Pemesanan (hanya untuk user login) -->
                         @if(!$isGuest)
                             <div>

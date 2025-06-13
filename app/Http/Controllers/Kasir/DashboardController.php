@@ -17,23 +17,14 @@ class DashboardController extends Controller
             ->orderBy('waktu_pesanan', 'desc')
             ->paginate(10);
 
-        $reservasiAktif = Reservasi::with('meja')
-            ->whereIn('status', ['menunggu', 'dikonfirmasi'])
-            ->orderBy('waktu_reservasi', 'asc')
-            ->get();
-
-
             $totalPesananHariIni = Pesanan::whereDate('waktu_pesanan', today())->count();
             $totalInvoiceHariIni = Invoice::whereDate('created_at', today())->count();
-            $totalReservasiHariIni = Reservasi::whereDate('waktu_reservasi', today())->count();
 
             return view('kasir.dashboard', [
                 'user' => $request->user(),
                 'pesananSelesai' => $pesananSelesai,
-            'reservasiAktif' => $reservasiAktif,
             'totalPesananHariIni' => $totalPesananHariIni,
             'totalInvoiceHariIni' => $totalInvoiceHariIni,
-            'totalReservasiHariIni' => $totalReservasiHariIni
         ]);
     }
 }

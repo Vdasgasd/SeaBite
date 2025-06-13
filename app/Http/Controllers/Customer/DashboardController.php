@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Customer;
 
-use App\Http\Controllers\Controller;
 use App\Models\Meja;
 use App\Models\Pesanan;
+use App\Models\Reservasi;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth; // <-- TAMBAHKAN USE STATEMENT INI
 
 class DashboardController extends Controller {
@@ -30,6 +31,11 @@ class DashboardController extends Controller {
                 ->with(['detailPesanan.menu', 'meja'])
                 ->orderByDesc('waktu_pesanan')
                 ->first();
+
+            $reservasiTerakhir = Reservasi::where('user_id', $user->id)
+                                ->with('meja') // Eager load untuk detail meja
+                                ->latest('waktu_reservasi') // Ambil yang paling baru/mendatang
+                                ->first();
 
             // Ambil riwayat pesanan selesai dari user ini
             $riwayatPesanan = Pesanan::where(function ($query) use ($mejaIds, $user) {
@@ -68,6 +74,8 @@ class DashboardController extends Controller {
 
             // Untuk guest, tidak ada riwayat pesanan
             $riwayatPesanan = collect();
+            $reservasiTerakhir = collect();
+
         }
 
         // Daftar meja tersedia (untuk semua user)
@@ -75,6 +83,7 @@ class DashboardController extends Controller {
 
         return view('customer.dashboard', [
             'user' => $user,
+            'reservasiTerakhir' => $reservasiTerakhir,
             'pesananAktif' => $pesananAktif,
             'riwayatPesanan' => $riwayatPesanan,
             'daftarMejaTersedia' => $daftarMejaTersedia,

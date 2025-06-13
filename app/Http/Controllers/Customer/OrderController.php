@@ -125,12 +125,9 @@ class OrderController extends Controller {
 
             Session::forget($cartKey);
 
-            // --- SIMPAN ID PESANAN UNTUK GUEST ---
-            // Simpan pesanan ID di session untuk tracking (berlaku untuk guest maupun user)
             if (!Auth::check()) {
                 session(['pesanan_aktif_id' => $pesanan->pesanan_id]);
             }
-            // --- AKHIR ---
 
             return redirect()->route('customer.dashboard')->with('success', 'Pesanan Anda berhasil dibuat dan sedang diproses!');
         } catch (\Exception $e) {

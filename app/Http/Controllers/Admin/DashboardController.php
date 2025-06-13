@@ -2,22 +2,22 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Ikan;
+use App\Models\Meja;
+use App\Models\Menu;
 
 
 // Import model yang relevan
-use App\Models\Invoice;
-use App\Models\Menu;
-use App\Models\Ikan;
-use App\Models\Meja;
 use App\Models\User;
+use App\Models\Invoice;
+use App\Models\Reservasi;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
-class DashboardController extends Controller
-{
-    public function index(Request $request)
-    {
+class DashboardController extends Controller {
+
+    public function index(Request $request) {
         $user = $request->user();
 
         // Ambil data statistik
@@ -27,13 +27,16 @@ class DashboardController extends Controller
         $totalUser = User::count();
         $totalInvoice = Invoice::count();
 
+        $totalReservasi = Reservasi::count();
+
         return view('admin.dashboard', [
-            'user'       => $user,
-            'totalMenu'  => $totalMenu,
-            'totalIkan'  => $totalIkan,
-            'totalMeja'  => $totalMeja,
-            'totalUser'  => $totalUser,
+            'user' => $user,
+            'totalMenu' => $totalMenu,
+            'totalIkan' => $totalIkan,
+            'totalMeja' => $totalMeja,
+            'totalUser' => $totalUser,
             'totalInvoice' => $totalInvoice,
+            'totalReservasi' => $totalReservasi,
         ]);
     }
 }

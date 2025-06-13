@@ -11,7 +11,6 @@ class Reservasi extends Model
 
     protected $table = 'reservasi';
     protected $primaryKey = 'reservasi_id';
-    public $timestamps = false;
 
     protected $fillable = [
         'meja_id',

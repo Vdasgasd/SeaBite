@@ -16,7 +16,8 @@ return new class extends Migration
             $table->string('telepon', 20);
             $table->dateTime('waktu_reservasi');
             $table->integer('jumlah_tamu');
-            $table->enum('status', ['dikonfirmasi', 'hadir', 'batal'])->default('dikonfirmasi');
+            $table->enum('status', ['pending','dikonfirmasi', 'hadir', 'batal'])->default('pending');
+            $table->timestamps();
         });
     }
 
