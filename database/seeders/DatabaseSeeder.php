@@ -47,6 +47,8 @@ class DatabaseSeeder extends Seeder {
 
         $this->call([
             MasterMenuSeeder::class,
+            MejaSeeder::class,
+            MetodeMasakSeeder::class,
         ]);
     }
 }

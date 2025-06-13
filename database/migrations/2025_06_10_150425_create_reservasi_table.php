@@ -11,6 +11,7 @@ return new class extends Migration
         Schema::create('reservasi', function (Blueprint $table) {
             $table->id('reservasi_id');
             $table->foreignId('meja_id')->constrained('meja', 'meja_id')->restrictOnDelete()->cascadeOnUpdate();
+            $table->foreignId('user_id')->constrained('users')->restrictOnDelete()->cascadeOnUpdate();
             $table->string('nama_pelanggan', 100);
             $table->string('telepon', 20);
             $table->dateTime('waktu_reservasi');

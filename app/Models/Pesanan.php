@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -13,8 +12,10 @@ class Pesanan extends Model
     protected $table = 'pesanan';
     protected $primaryKey = 'pesanan_id';
 
+    public $timestamps = false;
     protected $fillable = [
         'meja_id',
+        'user_id',
         'waktu_pesanan',
         'status_pesanan',
         'total_harga'
@@ -26,6 +27,13 @@ class Pesanan extends Model
     ];
 
     // Relationships
+
+    public function user()
+    {
+        // Relasi ke model User, dengan foreign key 'user_id'
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
     public function meja()
     {
         return $this->belongsTo(Meja::class, 'meja_id', 'meja_id');

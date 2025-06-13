@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -16,6 +15,7 @@ class Reservasi extends Model
 
     protected $fillable = [
         'meja_id',
+        'user_id',
         'nama_pelanggan',
         'telepon',
         'waktu_reservasi',
@@ -27,9 +27,15 @@ class Reservasi extends Model
         'waktu_reservasi' => 'datetime',
     ];
 
-    // Relationships
+    // Relationship to Meja
     public function meja()
     {
         return $this->belongsTo(Meja::class, 'meja_id', 'meja_id');
+    }
+
+    // Relationship to User
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 }

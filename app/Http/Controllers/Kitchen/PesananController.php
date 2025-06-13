@@ -14,7 +14,7 @@ class PesananController extends Controller
     {
         // Tampilkan pesanan yang baru atau sedang dimasak
         $pesanan = Pesanan::with(['meja', 'detailPesanan.menu', 'detailPesanan.metodeMasak'])
-            ->whereIn('status_pesanan', ['baru', 'dimasak'])
+            ->whereIn('status_pesanan', ['antrian', 'diproses'])
             ->orderBy('waktu_pesanan', 'asc')
             ->get();
 
@@ -41,7 +41,7 @@ class PesananController extends Controller
     public function cooking()
     {
         $pesanan = Pesanan::with(['meja', 'detailPesanan.menu', 'detailPesanan.metodeMasak'])
-            ->where('status_pesanan', 'dimasak')
+            ->where('status_pesanan', 'diproses')
             ->orderBy('waktu_pesanan', 'asc')
             ->get();
 

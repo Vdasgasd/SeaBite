@@ -14,12 +14,6 @@
             <!-- Desktop Menu -->
             <div class="sm:flex sm:items-center sm:space-x-6">
 
-                @if ( Auth::user()->role == 'cust' )
-                <a href="{{-- route('reservasi') --}}" class="text-sm font-medium hover:text-blue-600 transition">
-                    Reservasi
-                </a>
-                @endif
-
                 <!-- User Dropdown -->
                 <div class="ms-3 relative">
                     <x-dropdown align="right" width="48">
@@ -28,7 +22,6 @@
                                 class="inline-flex items-center px-3 py-2 border border-transparent
                                            text-sm leading-4 font-medium rounded-md text-gray-800 hover:text-blue-600
                                            focus:outline-none transition">
-                                <div>{{ Auth::user()->name }}</div>
                                 <div class="ms-1">
                                     <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
                                         viewBox="0 0 20 20">
@@ -80,18 +73,14 @@
             <x-responsive-nav-link href="{{-- route('menu') --}}" :active="request()->routeIs('menu')">
                 {{ __('Menu') }}
             </x-responsive-nav-link>
-            @if (Auth::user()->role == 'cust')
-            <x-responsive-nav-link href="{{-- route('reservasi') --}}" :active="request()->routeIs('reservasi')">
-                {{ __('Reservasi') }}
-            </x-responsive-nav-link>
-            @endif
+
         </div>
 
         <!-- Mobile User Info -->
         <div class="pt-4 pb-1 border-t border-gray-200">
             <div class="px-4">
-                <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
-                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+                {{-- <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div> --}}
+                {{-- <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div> --}}
             </div>
 
             <div class="mt-3 space-y-1">
