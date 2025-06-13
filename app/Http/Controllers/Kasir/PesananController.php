@@ -14,9 +14,9 @@ class PesananController extends Controller
         // Tampilkan semua pesanan
         $pesanan = Pesanan::with(['meja', 'detailPesanan.menu'])
             ->orderBy('waktu_pesanan', 'desc')
-            ->get();
+            ->paginate(15);
 
-        return response()->json($pesanan);
+        return view('kasir.pesanan.index', compact('pesanan'));
     }
 
     public function store(Request $request)
@@ -33,7 +33,7 @@ class PesananController extends Controller
 
         $pesanan = Pesanan::create([
             'meja_id' => $validated['meja_id'],
-            'status_pesanan' => 'baru'
+            'status_pesanan' => 'antrian'
         ]);
 
         $totalHarga = 0;
@@ -71,19 +71,21 @@ class PesananController extends Controller
 
         $pesanan->update(['total_harga' => $totalHarga]);
 
-        return response()->json($pesanan->load('detailPesanan'), 201);
+        return redirect()->route('kasir.pesanan.show', $pesanan)
+            ->with('success', 'Pesanan berhasil dibuat');
     }
 
     public function show(Pesanan $pesanan)
     {
         $pesanan->load(['meja', 'detailPesanan.menu', 'detailPesanan.metodeMasak']);
-        return response()->json($pesanan);
+        return view('kasir.pesanan.show', compact('pesanan'));
     }
 
     public function update(Request $request, Pesanan $pesanan)
     {
-        if ($pesanan->status_pesanan !== 'baru') {
-            return response()->json(['error' => 'Pesanan tidak dapat diubah'], 400);
+        if ($pesanan->status_pesanan !== 'antrian') {
+            return redirect()->back()
+                ->with('error', 'Pesanan tidak dapat diubah');
         }
 
         $validated = $request->validate([
@@ -131,16 +133,19 @@ class PesananController extends Controller
 
         $pesanan->update(['total_harga' => $totalHarga]);
 
-        return response()->json($pesanan->load('detailPesanan'));
+        return redirect()->route('kasir.pesanan.show', $pesanan)
+            ->with('success', 'Pesanan berhasil diupdate');
     }
 
     public function destroy(Pesanan $pesanan)
     {
-        if ($pesanan->status_pesanan !== 'baru') {
-            return response()->json(['error' => 'Pesanan tidak dapat dibatalkan'], 400);
+        if ($pesanan->status_pesanan !== 'antrian') {
+            return redirect()->back()
+                ->with('error', 'Pesanan tidak dapat dibatalkan');
         }
 
         $pesanan->update(['status_pesanan' => 'dibatalkan']);
-        return response()->json(['message' => 'Pesanan dibatalkan']);
+        return redirect()->route('kasir.pesanan.index')
+            ->with('success', 'Pesanan berhasil dibatalkan');
     }
 }

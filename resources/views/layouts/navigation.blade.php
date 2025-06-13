@@ -6,7 +6,7 @@
                 <a href="{{ route('dashboard') }}">
                     <div class="flex items-center space-x-2">
                         <i class="fas fa-fish text-blue-500 text-2xl"></i>
-                        <h1 class="text-xl font-bold">FishBite</h1>
+                        <h1 class="text-xl font-bold">SeaBite Resto</h1>
                     </div>
                 </a>
             </div>

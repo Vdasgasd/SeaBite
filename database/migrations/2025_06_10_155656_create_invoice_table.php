@@ -18,6 +18,7 @@ return new class extends Migration
             $table->timestamp('waktu_pembayaran')->useCurrent();
             $table->enum('metode_pembayaran', ['tunai', 'kartu_debit', 'kartu_kredit'])->default('tunai');
             $table->decimal('total_bayar', 10, 2);
+            $table->timestamps();
         });
     }
 

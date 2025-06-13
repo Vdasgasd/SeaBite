@@ -22,7 +22,7 @@
         <header class="bg-white shadow-md sticky top-0 z-40">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
                 <div>
-                    <h1 class="text-2xl font-bold text-red-500">FishBite Resto</h1>
+                    <h1 class="text-2xl font-bold text-red-500">SeaBite Resto</h1>
                     <p class="text-gray-600">Anda memesan untuk <span class="font-bold">Meja
                             {{ $meja->nomor_meja }}</span></p>
                 </div>

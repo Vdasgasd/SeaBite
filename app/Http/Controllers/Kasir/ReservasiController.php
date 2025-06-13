@@ -10,8 +10,11 @@ class ReservasiController extends Controller
 {
     public function index()
     {
-        $reservasi = Reservasi::with('meja')->get();
-        return response()->json($reservasi);
+        $reservasi = Reservasi::with('meja')
+            ->orderBy('waktu_reservasi', 'desc')
+            ->paginate(15);
+
+        return view('kasir.reservasi.index', compact('reservasi'));
     }
 
     public function store(Request $request)
@@ -25,12 +28,15 @@ class ReservasiController extends Controller
         ]);
 
         $reservasi = Reservasi::create($validated);
-        return response()->json($reservasi->load('meja'), 201);
+
+        return redirect()->route('kasir.reservasi.show', $reservasi)
+            ->with('success', 'Reservasi berhasil dibuat');
     }
 
     public function show(Reservasi $reservasi)
     {
-        return response()->json($reservasi->load('meja'));
+        $reservasi->load('meja');
+        return view('kasir.reservasi.show', compact('reservasi'));
     }
 
     public function update(Request $request, Reservasi $reservasi)
@@ -40,12 +46,16 @@ class ReservasiController extends Controller
         ]);
 
         $reservasi->update($validated);
-        return response()->json($reservasi);
+
+        return redirect()->route('kasir.reservasi.show', $reservasi)
+            ->with('success', 'Status reservasi berhasil diupdate');
     }
 
     public function destroy(Reservasi $reservasi)
     {
         $reservasi->delete();
-        return response()->json(['message' => 'Reservasi deleted successfully']);
+
+        return redirect()->route('kasir.reservasi.index')
+            ->with('success', 'Reservasi berhasil dihapus');
     }
 }

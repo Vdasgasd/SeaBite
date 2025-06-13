@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content="{{ csrf_token() }}" />
-    <title>FishBite Resto</title>
+    <title>SeaBite Resto</title>
     <link rel="preconnect" href="https://fonts.bunny.net" />
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
@@ -20,7 +20,7 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
                 <a href="/" class="flex items-center space-x-3">
                     <i class="fas fa-fish text-red-500 text-2xl"></i>
-                    <h1 class="text-2xl font-bold text-gray-800 dark:text-white">FishBite Resto</h1>
+                    <h1 class="text-2xl font-bold text-gray-800 dark:text-white">SeaBite Resto</h1>
                 </a>
                 <nav class="hidden sm:flex space-x-4">
                     @if (Route::has('login'))
@@ -52,7 +52,7 @@
         <section
             class="py-24 text-center bg-gradient-to-br from-red-100 via-white to-red-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
             <div class="max-w-4xl mx-auto px-6">
-                <h1 class="text-5xl font-bold text-red-600 dark:text-red-400 mb-4">Selamat Datang di FishBite Resto</h1>
+                <h1 class="text-5xl font-bold text-red-600 dark:text-red-400 mb-4">Selamat Datang di SeaBite Resto</h1>
                 <p class="text-xl text-gray-700 dark:text-gray-300 mb-8">Nikmati kelezatan hidangan laut segar dengan
                     cita rasa autentik dan sentuhan modern.</p>
                 <div class="flex flex-wrap justify-center gap-4">
@@ -130,7 +130,7 @@
                     <a href="#" class="hover:text-gray-200 transition"><i class="fab fa-instagram"></i></a>
                     <a href="#" class="hover:text-gray-200 transition"><i class="fab fa-twitter"></i></a>
                 </div>
-                <p class="text-sm">© {{ date('Y') }} FishBite Resto. All Rights Reserved.</p>
+                <p class="text-sm">© {{ date('Y') }} SeaBite Resto. All Rights Reserved.</p>
             </div>
         </footer>
     </div>

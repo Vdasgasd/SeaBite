@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Http\Controllers\Kasir;
 
 use App\Models\Invoice;
@@ -13,8 +12,11 @@ class InvoiceController extends Controller
 {
     public function index()
     {
-        $invoices = Invoice::with(['pesanan.meja', 'kasir'])->get();
-        return response()->json($invoices);
+        $invoices = Invoice::with(['pesanan.meja', 'kasir'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(15);
+
+        return view('kasir.invoice.index', compact('invoices'));
     }
 
     public function store(Request $request)
@@ -27,7 +29,8 @@ class InvoiceController extends Controller
         $pesanan = Pesanan::findOrFail($validated['pesanan_id']);
 
         if ($pesanan->status_pesanan !== 'selesai') {
-            return response()->json(['error' => 'Pesanan belum selesai'], 400);
+            return redirect()->back()
+                ->with('error', 'Pesanan belum selesai');
         }
 
         $invoice = Invoice::create([
@@ -39,13 +42,16 @@ class InvoiceController extends Controller
 
         // Update status pesanan menjadi dibayar
         $pesanan->update(['status_pesanan' => 'dibayar']);
+        $pesanan->meja->update(['status' => 'tersedia']);
 
-        return response()->json($invoice->load('pesanan'), 201);
+
+        return redirect()->route('kasir.invoice.show', $invoice)
+            ->with('success', 'Invoice berhasil dibuat');
     }
 
     public function show(Invoice $invoice)
     {
         $invoice->load(['pesanan.meja', 'pesanan.detailPesanan.menu', 'kasir']);
-        return response()->json($invoice);
+        return view('kasir.invoice.show', compact('invoice'));
     }
 }

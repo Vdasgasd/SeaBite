@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Semua Menu | FishBite Resto</title>
+    <title>Semua Menu | SeaBite Resto</title>
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <link rel="preconnect" href="https://fonts.bunny.net" />
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet" />
@@ -20,7 +20,7 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
                 <a href="/" class="flex items-center space-x-3">
                     <i class="fas fa-fish text-red-500 text-2xl"></i>
-                    <h1 class="text-2xl font-bold text-gray-800 dark:text-white">FishBite Resto</h1>
+                    <h1 class="text-2xl font-bold text-gray-800 dark:text-white">SeaBite Resto</h1>
                 </a>
                 <nav class="hidden sm:flex space-x-4">
                     @if (Route::has('login'))
@@ -112,7 +112,7 @@
                     <a href="#" class="hover:text-gray-200 transition"><i class="fab fa-instagram"></i></a>
                     <a href="#" class="hover:text-gray-200 transition"><i class="fab fa-twitter"></i></a>
                 </div>
-                <p class="text-sm">© {{ date('Y') }} FishBite Resto. All Rights Reserved.</p>
+                <p class="text-sm">© {{ date('Y') }} SeaBite Resto. All Rights Reserved.</p>
             </div>
         </footer>
 

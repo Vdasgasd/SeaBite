@@ -140,7 +140,6 @@ Route::middleware(['auth', 'role:kasir'])->prefix('kasir')->name('kasir.')->grou
     Route::resource('reservasi', KasirReservasiController::class);
 });
 
-
 // Customer Routes (KHUSUS UNTUK YANG SUDAH LOGIN)
 Route::middleware(['auth', 'role:cust'])->prefix('customer')->name('customer.')->group(function () {
 

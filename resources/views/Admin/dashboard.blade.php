@@ -12,7 +12,7 @@
                             <i class="fas fa-user-shield text-blue-500 text-3xl mr-4"></i>
                             <div>
                                 <h3 class="text-2xl font-bold">Welcome, {{ $user->name }}!</h3>
-                                <p class="text-gray-600">Administrator Dashboard - FishBite Restaurant</p>
+                                <p class="text-gray-600">Administrator Dashboard - SeaBite Resto</p>
                             </div>
                         </div>
                     </div>
