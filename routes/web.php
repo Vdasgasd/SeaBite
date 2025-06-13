@@ -25,7 +25,6 @@ use App\Http\Controllers\Kitchen\DashboardController as KitchenDashboardControll
 // Kasir Controllers
 use App\Http\Controllers\Kasir\InvoiceController as KasirInvoiceController;
 use App\Http\Controllers\Kasir\PesananController as KasirPesananController;
-use App\Http\Controllers\Kasir\ReservasiController as KasirReservasiController;
 use App\Http\Controllers\Kasir\DashboardController as KasirDashboardController;
 
 // Customer Controllers
@@ -137,7 +136,6 @@ Route::middleware(['auth', 'role:kasir'])->prefix('kasir')->name('kasir.')->grou
     Route::get('/dashboard', [KasirDashboardController::class, 'index'])->name('dashboard');
     Route::resource('pesanan', KasirPesananController::class);
     Route::resource('invoice', KasirInvoiceController::class)->only(['index', 'store', 'show']);
-    Route::resource('reservasi', KasirReservasiController::class);
 });
 
 // Customer Routes (KHUSUS UNTUK YANG SUDAH LOGIN)
