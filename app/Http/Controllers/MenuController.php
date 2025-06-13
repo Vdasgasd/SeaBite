@@ -20,7 +20,7 @@ class MenuController extends Controller {
             });
         }
 
-        $menus = $query->paginate(9)->withQueryString(); // ⬅️ penting: paginate di-query, bukan di-collection
+        $menus = $query->paginate(9)->withQueryString();
         $kategoris = Kategori::all();
 
         return view('menu', compact('menus', 'kategoris'));

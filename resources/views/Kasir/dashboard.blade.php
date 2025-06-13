@@ -46,38 +46,51 @@
                             Lihat Semua Pesanan
                         </a>
                     </div>
-                    <div class="space-y-4">
+                    <div class="space-y-6">
                         @forelse ($pesananSelesai as $pesanan)
-                            <div class="border rounded-lg p-4 bg-gray-50">
-                                <div class="flex justify-between items-start">
+                            <div
+                                class="border border-gray-200 rounded-xl p-6 bg-white shadow-sm hover:shadow-md transition">
+                                <div class="flex justify-between items-start flex-wrap gap-4">
                                     <div>
-                                        <h4 class="font-medium text-gray-900">Pesanan #{{ $pesanan->pesanan_id }}</h4>
-                                        <p class="text-sm text-gray-500">Meja: {{ $pesanan->meja->nomor_meja }}</p>
-                                        <p class="text-sm text-gray-500">Waktu:
-                                            {{ \Carbon\Carbon::parse($pesanan->waktu_pesanan)->translatedFormat('d F Y H:i') }}
+                                        <h4 class="text-lg font-semibold text-gray-800 mb-1">📦 Pesanan
+                                            #{{ $pesanan->pesanan_id }}</h4>
+                                        <p class="text-sm text-gray-500">🪑 Meja: <span
+                                                class="font-medium text-gray-700">{{ $pesanan->meja->nomor_meja }}</span>
                                         </p>
-                                        <ul class="mt-2 space-y-1">
+                                        <p class="text-sm text-gray-500">⏰ Waktu:
+                                            <span
+                                                class="text-gray-700">{{ \Carbon\Carbon::parse($pesanan->waktu_pesanan)->translatedFormat('d F Y H:i') }}</span>
+                                        </p>
+
+                                        <ul class="mt-4 space-y-1">
                                             @foreach ($pesanan->detailPesanan as $detail)
-                                                <li class="text-sm text-gray-600">{{ $detail->menu->nama_menu }} -
-                                                    {{ $detail->jumlah ? $detail->jumlah . ' item' : $detail->berat_gram . ' gram' }}
-                                                    (Rp {{ number_format($detail->subtotal, 0, ',', '.') }})
+                                                <li class="text-sm text-gray-600 flex items-center">
+                                                    🍽️ <span class="ml-1">{{ $detail->menu->nama_menu }} –
+                                                        {{ $detail->jumlah ? $detail->jumlah . ' item' : $detail->berat_gram . ' gram' }}
+                                                        (<span class="text-gray-700">Rp
+                                                            {{ number_format($detail->subtotal, 0, ',', '.') }}</span>)
+                                                    </span>
                                                 </li>
                                             @endforeach
                                         </ul>
-                                        <p class="font-medium text-lg text-green-600 mt-2">Total: Rp
-                                            {{ number_format($pesanan->total_harga, 0, ',', '.') }}</p>
+
+                                        <p class="font-semibold text-green-600 text-base mt-4">
+                                            💰 Total: Rp {{ number_format($pesanan->total_harga, 0, ',', '.') }}
+                                        </p>
                                     </div>
-                                    <button
-                                        onclick="openPaymentModal('{{ $pesanan->pesanan_id }}', '{{ $pesanan->total_harga }}')"
-                                        class="text-blue-600 hover:text-blue-900">
-                                        Proses Pembayaran
-                                    </button>
+
+                                    <a href="{{ route('kasir.pesanan.show', $pesanan) }}"
+                                        class="self-start inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-5 rounded-lg shadow-md transition-all duration-300 ease-in-out">
+                                        🔍 Lihat Pesanan
+                                    </a>
                                 </div>
                             </div>
                         @empty
-                            <p class="text-gray-500 text-center py-4">Tidak ada pesanan yang perlu dibayar saat ini.</p>
+                            <p class="text-gray-500 text-center py-8 text-base">📭 Tidak ada pesanan yang perlu dibayar
+                                saat ini.</p>
                         @endforelse
                     </div>
+
                     <div class="mt-6">
                         {{ $pesananSelesai->links() }}
                     </div>

@@ -280,13 +280,12 @@
                                             @endif
                                         </div>
                                     `;
-                                    clearInterval(intervalId); // Stop polling
-                                }
+                                    clearInterval(intervalId);
                             })
                             .catch(error => {
                                 console.error('Gagal memuat status pesanan:', error);
                             });
-                    }, 5000); // Poll setiap 5 detik
+                    }, 5000);
                 }
             });
         </script>

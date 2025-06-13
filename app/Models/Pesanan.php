@@ -12,7 +12,6 @@ class Pesanan extends Model
     protected $table = 'pesanan';
     protected $primaryKey = 'pesanan_id';
 
-    public $timestamps = false;
     protected $fillable = [
         'meja_id',
         'user_id',

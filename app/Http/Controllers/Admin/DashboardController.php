@@ -7,7 +7,6 @@ use App\Models\Meja;
 use App\Models\Menu;
 
 
-// Import model yang relevan
 use App\Models\User;
 use App\Models\Invoice;
 use App\Models\Reservasi;
@@ -20,7 +19,6 @@ class DashboardController extends Controller {
     public function index(Request $request) {
         $user = $request->user();
 
-        // Ambil data statistik
         $totalMenu = Menu::count();
         $totalIkan = Ikan::count();
         $totalMeja = Meja::count();

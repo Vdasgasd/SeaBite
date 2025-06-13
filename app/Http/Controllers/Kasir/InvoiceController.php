@@ -40,7 +40,7 @@ class InvoiceController extends Controller
             'total_bayar' => $pesanan->total_harga
         ]);
 
-        // Update status pesanan menjadi dibayar
+
         $pesanan->update(['status_pesanan' => 'dibayar']);
         $pesanan->meja->update(['status' => 'tersedia']);
 

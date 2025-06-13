@@ -17,7 +17,7 @@ class ReservasiController extends Controller {
     }
 
     public function create() {
-        $meja = Meja::where('status', 'tersedia')->get(); // Kalau mau kirim data meja
+        $meja = Meja::where('status', 'tersedia')->get();
         return view('customer.reservasi.create', compact('meja'));
     }
 

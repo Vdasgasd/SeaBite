@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class KategoriController extends Controller {
     public function index() {
         $kategori = Kategori::all();
-        // Mengirim data ke view 'admin.kategori.index'
+
         return view('admin.kategori.index', compact('kategori'));
     }
 
@@ -19,7 +19,7 @@ class KategoriController extends Controller {
         ]);
 
         Kategori::create($validated);
-        // Redirect ke halaman index dengan pesan sukses
+
         return redirect()->route('admin.kategori.index')->with('success', 'Kategori berhasil ditambahkan.');
     }
     public function create() {
@@ -27,7 +27,7 @@ class KategoriController extends Controller {
     }
 
     public function show(Kategori $kategori) {
-        // Menampilkan detail di view 'admin.kategori.show'
+
         return view('admin.kategori.show', compact('kategori'));
     }
 
@@ -42,13 +42,13 @@ class KategoriController extends Controller {
         ]);
 
         $kategori->update($validated);
-        // Redirect ke halaman index dengan pesan sukses
+
         return redirect()->route('admin.kategori.index')->with('success', 'Kategori berhasil diperbarui.');
     }
 
     public function destroy(Kategori $kategori) {
         $kategori->delete();
-        // Redirect ke halaman index dengan pesan sukses
+
         return redirect()->route('admin.kategori.index')->with('success', 'Kategori berhasil dihapus.');
     }
 }

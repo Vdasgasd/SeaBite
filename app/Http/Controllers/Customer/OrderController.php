@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Customer;
 
+use App\Models\Ikan;
 use App\Models\Meja;
 use App\Models\Menu;
 use App\Models\Pesanan;
@@ -11,8 +12,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class OrderController extends Controller {
     public function show(Meja $meja) {
@@ -95,19 +96,37 @@ class OrderController extends Controller {
             return redirect()->route('order.show', $meja->nomor_meja)->with('error', 'Keranjang Anda kosong.');
         }
 
+
         DB::beginTransaction();
+
         try {
             $totalHarga = array_sum(array_column($cart, 'subtotal'));
 
+
             $pesanan = Pesanan::create([
                 'meja_id' => $meja->meja_id,
-                'user_id' => Auth::id(), // Akan null jika guest
+                'user_id' => Auth::id(),
                 'waktu_pesanan' => now(),
                 'status_pesanan' => 'antrian',
                 'total_harga' => $totalHarga,
             ]);
 
             foreach ($cart as $item) {
+
+                if (isset($item['berat_gram']) && $item['berat_gram'] > 0) {
+                    $menu = Menu::find($item['menu_id']);
+
+                    if ($menu && $menu->ikan_id) {
+                        $ikan = Ikan::where('ikan_id', $menu->ikan_id)->lockForUpdate()->first();
+
+                        if ($ikan->stok_gram < $item['berat_gram']) {
+                            throw new \Exception('Stok untuk ' . $ikan->nama_ikan . ' tidak mencukupi. Pesanan dibatalkan.');
+                        }
+
+                        $ikan->decrement('stok_gram', $item['berat_gram']);
+                    }
+                }
+
                 $pesanan->detailPesanan()->create([
                     'menu_id' => $item['menu_id'],
                     'metode_masak_id' => $item['metode_masak_id'],
@@ -134,11 +153,10 @@ class OrderController extends Controller {
             DB::rollBack();
             Log::error('Gagal membuat pesanan: ' . $e->getMessage());
 
-            return redirect()->route('order.show', $meja->nomor_meja)->with('error', 'Terjadi kesalahan. Silakan coba lagi.');
+            return redirect()->route('order.show', $meja->nomor_meja)->with('error', $e->getMessage());
         }
     }
 
-    // OPTIONAL: Method untuk menghapus session pesanan ketika selesai/dibayar
     public function clearGuestOrder($pesananId) {
         if (session('pesanan_aktif_id') == $pesananId) {
             session()->forget('pesanan_aktif_id');

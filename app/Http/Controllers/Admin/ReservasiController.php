@@ -27,7 +27,7 @@ class ReservasiController extends Controller {
 
         $reservasi->update($validated);
 
-        // Cek dan update status meja
+
         $meja = $reservasi->meja;
 
         if ($meja) {

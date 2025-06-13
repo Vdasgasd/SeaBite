@@ -77,8 +77,6 @@
                                             required>
                                             <option value="">Pilih Metode Pembayaran</option>
                                             <option value="tunai">Tunai</option>
-                                            <option value="kartu_debit">Kartu Debit</option>
-                                            <option value="kartu_kredit">Kartu Kredit</option>
                                         </select>
                                     </div>
                                     <button type="submit"

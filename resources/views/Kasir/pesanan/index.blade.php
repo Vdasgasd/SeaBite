@@ -80,35 +80,9 @@
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                             <a href="{{ route('kasir.pesanan.show', $item) }}"
-                                                class="text-blue-600 hover:text-blue-900 mr-3">Lihat</a>
-
-                                            @if ($item->status_pesanan == 'selesai')
-                                                <form action="{{ route('kasir.invoice.store') }}" method="POST"
-                                                    class="inline">
-                                                    @csrf
-                                                    <input type="hidden" name="pesanan_id"
-                                                        value="{{ $item->pesanan_id }}">
-                                                    <select name="metode_pembayaran"
-                                                        class="text-xs border rounded px-2 py-1 mr-2" required>
-                                                        <option value="">Pilih Metode</option>
-                                                        <option value="tunai">Tunai</option>
-                                                        <option value="kartu_debit">Kartu Debit</option>
-                                                        <option value="kartu_kredit">Kartu Kredit</option>
-                                                    </select>
-                                                    <button type="submit"
-                                                        class="text-green-600 hover:text-green-900">Bayar</button>
-                                                </form>
-                                            @endif
-
-                                            @if ($item->status_pesanan == 'antrian')
-                                                <form action="{{ route('kasir.pesanan.destroy', $item) }}"
-                                                    method="POST" class="inline ml-2">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="text-red-600 hover:text-red-900"
-                                                        onclick="return confirm('Yakin ingin membatalkan pesanan?')">Batalkan</button>
-                                                </form>
-                                            @endif
+                                                class="self-start inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-5 rounded-lg shadow-md transition-all duration-300 ease-in-out">
+                                                🔍 Lihat Pesanan
+                                            </a>
                                         </td>
                                     </tr>
                                 @empty

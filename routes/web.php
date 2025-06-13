@@ -33,15 +33,15 @@ use App\Http\Controllers\Customer\ReservasiController as CustomerReservasiContro
 Route::get('/', [LandingController::class, 'landing'])->name('landing');
 Route::get('/menu', [MenuController::class, 'index'])->name('menu.index');
 
-// ================= PERUBAHAN UTAMA DI SINI =================
-// Route Dashboard untuk customer (tamu & login) dibuat publik
-Route::get('/dashboard', [CustomerDashboardController::class, 'index'])->name('customer.dashboard');
-// Route API untuk cek status pesanan juga dibuat publik
-Route::get('/api/customer/pesanan-aktif', [CustomerDashboardController::class, 'getStatusPesananAktif'])->name('api.customer.pesanan.status');
-// ==========================================================
 
-// Redirect dashboard berdasarkan role (HANYA UNTUK YANG SUDAH LOGIN)
-Route::get('/dashboard-redirect', function () { // URL diubah agar tidak konflik
+
+Route::get('/dashboard', [CustomerDashboardController::class, 'index'])->name('customer.dashboard');
+
+Route::get('/api/customer/pesanan-aktif', [CustomerDashboardController::class, 'getStatusPesananAktif'])->name('api.customer.pesanan.status');
+
+
+
+Route::get('/dashboard-redirect', function () {
     $user = Auth::user();
 
     switch ($user->role) {
@@ -52,13 +52,13 @@ Route::get('/dashboard-redirect', function () { // URL diubah agar tidak konflik
         case 'kasir':
             return redirect()->route('kasir.dashboard');
         case 'cust':
-            // Langsung arahkan ke dashboard customer, bukan redirect loop
+
             return redirect()->route('customer.dashboard');
         default:
-            // Fallback jika role tidak dikenal
+
             return redirect('/');
     }
-})->middleware(['auth'])->name('dashboard'); // Nama 'dashboard' ini untuk redirect setelah login
+})->middleware(['auth'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -67,7 +67,7 @@ Route::middleware('auth')->group(function () {
 });
 
 
-// Admin Routes (Tidak ada perubahan)
+
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
     Route::resource('menu', AdminMenuController::class);
@@ -78,6 +78,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::resource('meja', AdminMejaController::class);
     Route::resource('user', AdminUserController::class);
     Route::get('/laporan/penjualan', [LaporanController::class, 'penjualan'])->name('laporan.penjualan');
+    Route::get('/laporan/export-pdf', [LaporanController::class, 'exportPdf'])->name('laporan.export-pdf');
 
     Route::resource('reservasi', AdminReservasiController::class);
     Route::patch('reservasi/{reservasi}/hadir', [AdminReservasiController::class, 'markAsHadir'])->name('reservasi.hadir');
@@ -86,7 +87,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 });
 
 
-// Route untuk Proses Pemesanan Pelanggan (Tidak ada perubahan, ini sudah benar)
+
 Route::prefix('pesan')->name('order.')->group(function () {
     Route::get('/{meja:nomor_meja}', [CustomerOrderController::class, 'show'])->name('show');
     Route::post('/{meja:nomor_meja}/add', [CustomerOrderController::class, 'addToCart'])->name('cart.add');
@@ -98,62 +99,37 @@ Route::prefix('pesan')->name('order.')->group(function () {
 
 
 
-// Kitchen Routes - Update yang sudah ada
+
 Route::middleware(['auth', 'role:kitchen'])->prefix('kitchen')->name('kitchen.')->group(function () {
-    // Dashboard Kitchen
+
     Route::get('/dashboard', [KitchenDashboardController::class, 'index'])->name('dashboard');
 
-    // API Routes untuk AJAX
-    Route::get('/api/new-orders', [KitchenDashboardController::class, 'getNewOrders'])->name('api.getNewOrders');
-
-    // Pesanan Routes
-    Route::prefix('pesanan')->name('pesanan.')->group(function () {
-        // API endpoints untuk mobile/AJAX
-        Route::get('/', [KitchenPesananController::class, 'index'])->name('index');
-        Route::get('/cooking', [KitchenPesananController::class, 'cooking'])->name('cooking');
-
-        // Detail pesanan - untuk AJAX modal
-        Route::get('/{pesanan}', [KitchenDashboardController::class, 'showPesanan'])->name('show');
-
-        // Update status pesanan
-        Route::patch('/{pesanan}/status', [KitchenDashboardController::class, 'updateStatus'])->name('updateStatus');
-        Route::patch('/{pesanan}/ready', [KitchenPesananController::class, 'markAsReady'])->name('markAsReady');
-    });
-
-    // View Routes
-    Route::get('/cooking-orders', function () {
-        $pesananCooking = \App\Models\Pesanan::with(['meja', 'detailPesanan.menu', 'detailPesanan.metodeMasak'])
-            ->where('status_pesanan', 'diproses')
-            ->orderBy('updated_at', 'asc')
-            ->get();
-
-        return view('kitchen.cooking-orders', compact('pesananCooking'));
-    })->name('cooking-orders');
+Route::patch('/kitchen/pesanan/{pesanan}/update-status', [KitchenDashboardController::class, 'updateStatus'])->name('kitchen.pesanan.updateStatus');
 });
 
 
-// Kasir Routes (Tidak ada perubahan)
+
 Route::middleware(['auth', 'role:kasir'])->prefix('kasir')->name('kasir.')->group(function () {
     Route::get('/dashboard', [KasirDashboardController::class, 'index'])->name('dashboard');
     Route::resource('pesanan', KasirPesananController::class);
     Route::resource('invoice', KasirInvoiceController::class)->only(['index', 'store', 'show']);
 });
 
-// Customer Routes (KHUSUS UNTUK YANG SUDAH LOGIN)
+
 Route::middleware(['auth', 'role:cust'])->prefix('customer')->name('customer.')->group(function () {
 
-    // Menu untuk Customer (read-only)
+
     Route::get('/menu', [CustomerMenuController::class, 'index'])->name('menu.index');
     Route::get('/menu/{menu}', [CustomerMenuController::class, 'show'])->name('menu.show');
     Route::get('/kategori', [CustomerMenuController::class, 'kategori'])->name('kategori');
 
-    // Reservasi untuk Customer
+
     Route::resource('reservasi', CustomerReservasiController::class);
      Route::get('reservasi-check', [CustomerReservasiController::class, 'availableTables'])->name('reservasi.availableTables');
 });
 
 
-// Public Routes (Tidak ada perubahan)
+
 Route::prefix('public')->name('public.')->group(function () {
     Route::get('/menu', [CustomerMenuController::class, 'index'])->name('menu');
     Route::get('/menu/{menu}', [CustomerMenuController::class, 'show'])->name('menu.show');

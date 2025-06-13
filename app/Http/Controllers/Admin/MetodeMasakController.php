@@ -11,7 +11,7 @@ class MetodeMasakController extends Controller
     public function index()
     {
         $metode = MetodeMasak::all();
-        // Mengirim data ke view 'admin.metode-masak.index'
+
         return view('admin.metode-masak.index', compact('metode'));
     }
 
@@ -23,13 +23,13 @@ class MetodeMasakController extends Controller
         ]);
 
         MetodeMasak::create($validated);
-        // Redirect ke halaman index dengan pesan sukses
+
         return redirect()->route('admin.metode-masak.index')->with('success', 'Metode masak berhasil ditambahkan.');
     }
 
     public function show(MetodeMasak $metode)
     {
-        // Menampilkan detail di view 'admin.metode-masak.show'
+
         return view('admin.metode-masak.show', compact('metode'));
     }
 
@@ -44,7 +44,7 @@ class MetodeMasakController extends Controller
         ]);
 
         $metode->update($validated);
-        // Redirect ke halaman index dengan pesan sukses
+
         return redirect()->route('admin.metode-masak.index')->with('success', 'Metode masak berhasil diperbarui.');
     }
 
@@ -55,7 +55,7 @@ class MetodeMasakController extends Controller
     public function destroy(MetodeMasak $metode)
     {
         $metode->delete();
-        // Redirect ke halaman index dengan pesan sukses
+
         return redirect()->route('admin.metode-masak.index')->with('success', 'Metode masak berhasil dihapus.');
     }
 }

@@ -11,7 +11,7 @@ class PesananController extends Controller
 {
     public function index()
     {
-        // Tampilkan semua pesanan
+
         $pesanan = Pesanan::with(['meja', 'detailPesanan.menu'])
             ->orderBy('waktu_pesanan', 'desc')
             ->paginate(15);
@@ -41,14 +41,14 @@ class PesananController extends Controller
         foreach ($validated['items'] as $item) {
             $menu = Menu::findOrFail($item['menu_id']);
 
-            // Hitung subtotal berdasarkan tipe harga
+
             if ($menu->tipe_harga === 'satuan') {
                 $subtotal = $menu->harga * ($item['jumlah'] ?? 1);
             } else {
                 $subtotal = ($menu->harga_per_100gr / 100) * ($item['berat_gram'] ?? 0);
             }
 
-            // Tambahkan biaya metode masak jika ada
+
             if (isset($item['metode_masak_id'])) {
                 $metodeMasak = \App\Models\MetodeMasak::find($item['metode_masak_id']);
                 if ($metodeMasak) {
@@ -97,7 +97,7 @@ class PesananController extends Controller
             'items.*.catatan' => 'nullable|string'
         ]);
 
-        // Hapus detail pesanan lama
+
         $pesanan->detailPesanan()->delete();
 
         $totalHarga = 0;
