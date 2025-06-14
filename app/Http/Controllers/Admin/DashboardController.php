@@ -23,7 +23,7 @@ class DashboardController extends Controller {
         $totalIkan = Ikan::count();
         $totalMeja = Meja::count();
         $totalUser = User::count();
-        $totalInvoice = Invoice::count();
+        $totalPendapatan = Invoice::sum('total_bayar');
 
         $totalReservasi = Reservasi::count();
 
@@ -33,7 +33,7 @@ class DashboardController extends Controller {
             'totalIkan' => $totalIkan,
             'totalMeja' => $totalMeja,
             'totalUser' => $totalUser,
-            'totalInvoice' => $totalInvoice,
+            'totalPendapatan' => $totalPendapatan,
             'totalReservasi' => $totalReservasi,
         ]);
     }

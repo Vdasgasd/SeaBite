@@ -23,7 +23,6 @@ use App\Http\Controllers\Customer\OrderController as CustomerOrderController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Kasir\DashboardController as KasirDashboardController;
 
-use App\Http\Controllers\Kitchen\PesananController as KitchenPesananController;
 use App\Http\Controllers\Admin\MetodeMasakController as AdminMetodeMasakController;
 use App\Http\Controllers\Kitchen\DashboardController as KitchenDashboardController;
 use App\Http\Controllers\Customer\DashboardController as CustomerDashboardController;
@@ -36,7 +35,7 @@ Route::get('/menu', [MenuController::class, 'index'])->name('menu.index');
 
 
 Route::get('/dashboard', [CustomerDashboardController::class, 'index'])->name('customer.dashboard');
-
+Route::post('/midtrans/notification', [App\Http\Controllers\Kasir\InvoiceController::class, 'notificationHandler'])->name('midtrans.notification');
 Route::get('/api/customer/pesanan-aktif', [CustomerDashboardController::class, 'getStatusPesananAktif'])->name('api.customer.pesanan.status');
 
 
@@ -103,8 +102,8 @@ Route::prefix('pesan')->name('order.')->group(function () {
 Route::middleware(['auth', 'role:kitchen'])->prefix('kitchen')->name('kitchen.')->group(function () {
 
     Route::get('/dashboard', [KitchenDashboardController::class, 'index'])->name('dashboard');
-
-Route::patch('/kitchen/pesanan/{pesanan}/update-status', [KitchenDashboardController::class, 'updateStatus'])->name('kitchen.pesanan.updateStatus');
+    Route::get('/pesanan/{pesanan}', [KitchenDashboardController::class, 'show'])->name('pesanan.show');
+    Route::patch('/pesanan/{pesanan}/update-status', [KitchenDashboardController::class, 'updateStatus'])->name('pesanan.updateStatus');
 });
 
 

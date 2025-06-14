@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('kasir_id')->nullable()->constrained('users', 'id')->nullOnDelete()->cascadeOnUpdate();
 
             $table->timestamp('waktu_pembayaran')->useCurrent();
-            $table->enum('metode_pembayaran', ['tunai', 'kartu_debit', 'kartu_kredit'])->default('tunai');
+            $table->string('metode_pembayaran');
             $table->decimal('total_bayar', 10, 2);
             $table->timestamps();
         });

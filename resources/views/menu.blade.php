@@ -62,7 +62,8 @@
                         class="w-full md:w-auto p-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-red-500 focus:border-red-500 dark:bg-gray-700 dark:text-white">
                         <option value="">Semua Kategori</option>
                         @foreach ($kategoris as $kategori)
-                            <option value="{{ $kategori->nama_kategori }}" {{ request('kategori') == $kategori->nama_kategori ? 'selected' : '' }}>
+                            <option value="{{ $kategori->nama_kategori }}"
+                                {{ request('kategori') == $kategori->nama_kategori ? 'selected' : '' }}>
                                 {{ $kategori->nama_kategori }}
                             </option>
                         @endforeach
@@ -77,10 +78,14 @@
                 <!-- Menu Grid -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                     @forelse ($menus as $menu)
-                        <div class="menu-item bg-white dark:bg-gray-800 rounded-xl shadow hover:shadow-xl transform hover:-translate-y-1 transition p-5">
-                            <img src="{{ $menu->gambar_url ?: 'https://placehold.co/600x400/EF4444/FFFFFF?text=Menu' }}"
-                                alt="{{ $menu->nama_menu }}" class="rounded-lg mb-4 w-full h-48 object-cover" />
-                            <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-2">{{ $menu->nama_menu }}</h3>
+                        <div
+                            class="menu-item bg-white dark:bg-gray-800 rounded-xl shadow hover:shadow-xl transform hover:-translate-y-1 transition p-5">
+                            <img src="{{ Str::startsWith($menu->gambar_url, ['http://', 'https://']) ? $menu->gambar_url : asset('storage/' . $menu->gambar_url) }}"
+                                alt="Gambar Menu" class="rounded-lg mb-4 w-full h-48 object-cover"
+                                onerror="this.onerror=null;this.src='{{ asset('images/placeholder.jpg') }}';">
+
+                            <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-2">{{ $menu->nama_menu }}
+                            </h3>
                             <p class="text-gray-600 dark:text-gray-300 mb-3">
                                 {{ $menu->deskripsi ?: 'Keterangan menu belum tersedia.' }}
                             </p>

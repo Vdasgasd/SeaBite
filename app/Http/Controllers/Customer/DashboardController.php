@@ -9,114 +9,47 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
-
-class DashboardController extends Controller {
-    public function index(Request $request) {
-        $user = $request->user();
-
-        $pesananAktif = null;
+class DashboardController extends Controller
+{
+    /**
+     * Menampilkan halaman dashboard untuk pelanggan atau tamu.
+     */
+    public function index(Request $request)
+    {
+        $user = Auth::user();
+        $reservasiTerakhir = null;
         $riwayatPesanan = collect();
 
         if ($user) {
-            $mejaIds = $user->reservasi()->pluck('meja_id');
-            $pesananAktif = Pesanan::where(function ($query) use ($mejaIds, $user) {
-                $query->whereIn('meja_id', $mejaIds)
-                    ->orWhere('user_id', $user->id);
-            })
-                ->whereIn('status_pesanan', ['antrian', 'diproses'])
-                ->with(['detailPesanan.menu', 'meja'])
-                ->orderByDesc('waktu_pesanan')
-                ->first();
-
             $reservasiTerakhir = Reservasi::where('user_id', $user->id)
                 ->with('meja')
                 ->latest('waktu_reservasi')
                 ->first();
 
-            $riwayatPesanan = Pesanan::where(function ($query) use ($mejaIds, $user) {
-                $query->whereIn('meja_id', $mejaIds)
-
-                    ->orWhere('user_id', $user->id);
-            })
+            $riwayatPesanan = Pesanan::where('user_id', $user->id)
                 ->whereIn('status_pesanan', ['selesai', 'dibayar'])
                 ->with('meja')
                 ->orderByDesc('waktu_pesanan')
                 ->paginate(5);
-        } else {
-
-
-
-            if (session()->has('pesanan_aktif_id')) {
-                $pesananAktifId = session('pesanan_aktif_id');
-
-
-                $pesananAktif = Pesanan::where('pesanan_id', $pesananAktifId)
-                    ->whereIn('status_pesanan', ['antrian', 'diproses'])
-                    ->with(['detailPesanan.menu', 'meja'])
-                    ->first();
-
-
-                if (!$pesananAktif) {
-
-                    $pesananSelesai = Pesanan::where('pesanan_id', $pesananAktifId)
-                        ->whereIn('status_pesanan', ['selesai', 'dibayar'])
-                        ->exists();
-
-                    if ($pesananSelesai) {
-                        session()->forget('pesanan_aktif_id');
-                    }
-                }
-            }
-
-
-            $riwayatPesanan = collect();
-            $reservasiTerakhir = collect();
         }
-
-
-        $daftarMejaTersedia = Meja::where('status', 'tersedia')->orderBy('kapasitas')->get();
 
         return view('customer.dashboard', [
             'user' => $user,
+            'pesananAktif' => $this->getPesananAktifFor($request),
             'reservasiTerakhir' => $reservasiTerakhir,
-            'pesananAktif' => $pesananAktif,
             'riwayatPesanan' => $riwayatPesanan,
-            'daftarMejaTersedia' => $daftarMejaTersedia,
-            'isGuest' => !$user,
+            'daftarMejaTersedia' => Meja::where('status', 'tersedia')->orderBy('kapasitas')->get(),
         ]);
     }
 
-
-    public function getStatusPesananAktif(Request $request) {
-        $user = $request->user();
-        $pesananAktif = null;
-
-        if ($user) {
-
-            $mejaIds = $user->reservasi()->pluck('meja_id');
-
-            $pesananAktif = Pesanan::where(function ($query) use ($mejaIds, $user) {
-                $query->whereIn('meja_id', $mejaIds)
-                    ->orWhere('user_id', $user->id);
-            })
-                ->whereIn('status_pesanan', ['antrian', 'diproses'])
-                ->with(['detailPesanan.menu', 'meja'])
-                ->orderByDesc('waktu_pesanan')
-                ->first();
-        } else {
-
-            if (session()->has('pesanan_aktif_id')) {
-                $pesananAktifId = session('pesanan_aktif_id');
-
-                $pesananAktif = Pesanan::where('pesanan_id', $pesananAktifId)
-                    ->whereIn('status_pesanan', ['antrian', 'diproses'])
-                    ->with(['detailPesanan.menu', 'meja'])
-                    ->first();
-            }
-        }
+    /**
+     * Mendapatkan status pesanan aktif via API untuk polling.
+     */
+    public function getStatusPesananAktif(Request $request)
+    {
+        $pesananAktif = $this->getPesananAktifFor($request);
 
         if ($pesananAktif) {
-
             $statusClass = match ($pesananAktif->status_pesanan) {
                 'antrian' => 'bg-yellow-100 text-yellow-800',
                 'diproses' => 'bg-blue-100 text-blue-800',
@@ -134,8 +67,42 @@ class DashboardController extends Controller {
             ]);
         }
 
-        return response()->json([
-            'status' => 'not_found'
-        ]);
+        // Cek apakah pesanan tamu baru saja selesai
+        if (Auth::guest() && session()->has('pesanan_aktif_id')) {
+            $pesananSelesai = Pesanan::where('pesanan_id', session('pesanan_aktif_id'))
+                                     ->whereIn('status_pesanan', ['selesai', 'dibayar'])
+                                     ->exists();
+            if ($pesananSelesai) {
+                session()->forget('pesanan_aktif_id');
+            }
+        }
+
+        return response()->json(['status' => 'not_found']);
+    }
+
+    /**
+     * Helper method untuk mengambil pesanan aktif (baik untuk user login maupun tamu).
+     * Ini menghilangkan duplikasi kode.
+     */
+    private function getPesananAktifFor(Request $request): ?Pesanan
+    {
+        if ($user = $request->user()) {
+            // Logika untuk user yang sudah login
+            return Pesanan::where('user_id', $user->id)
+                ->whereIn('status_pesanan', ['antrian', 'diproses'])
+                ->with(['detailPesanan.menu', 'meja'])
+                ->orderByDesc('waktu_pesanan')
+                ->first();
+        } else {
+            // Logika untuk tamu (berdasarkan session)
+            if (session()->has('pesanan_aktif_id')) {
+                return Pesanan::where('pesanan_id', session('pesanan_aktif_id'))
+                    ->whereIn('status_pesanan', ['antrian', 'diproses'])
+                    ->with(['detailPesanan.menu', 'meja'])
+                    ->first();
+            }
+        }
+
+        return null;
     }
 }

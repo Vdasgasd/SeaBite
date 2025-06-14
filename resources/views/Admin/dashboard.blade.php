@@ -18,17 +18,21 @@
                     </div>
                 </div>
 
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
-                    <div class="p-6 text-gray-900">
-                        <div class="flex items-center">
-                            <i class="fas fa-money-bill-wave text-green-500 text-3xl mr-4"></i>
-                            <div>
-                                <h3 class="text-2xl font-bold">Total Penjualan</h3>
-                                <p class="text-gray-600">{{ $totalInvoice }}</p>
-                            </div>
+                <div class="bg-white shadow rounded-lg p-6 mb-6">
+                    <div class="flex items-center space-x-4">
+                        <div class="flex items-center justify-center w-16 h-16 bg-green-100 rounded-full">
+                            <i class="fas fa-money-bill-wave text-green-600 text-3xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-800">Total Pendapatan</h3>
+                            <p class="text-2xl font-bold text-green-700 mt-1">
+                                {{ number_format($totalPendapatan, 0, ',', '.') }}
+                                <span class="text-sm text-gray-500">IDR</span>
+                            </p>
                         </div>
                     </div>
                 </div>
+
 
                 <!-- Stats Cards -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">

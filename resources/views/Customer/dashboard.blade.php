@@ -2,11 +2,11 @@
     <div x-data="{ isModalOpen: false }">
         <x-slot name="header">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                @if($isGuest)
+               @guest
                     {{ __('Dashboard Tamu') }}
                 @else
                     {{ __('Dashboard Pelanggan') }}
-                @endif
+                @endguest
             </h2>
         </x-slot>
 
@@ -16,9 +16,9 @@
                     <div class="p-6 text-gray-900">
 
                         {{-- Header berbeda untuk guest vs logged user --}}
-                        @if($isGuest)
+                        @guest
                             <div class="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
-                                <h3 class="text-2xl font-bold mb-2 text-blue-800">Selamat Datang, Tamu!</h3>
+                                <h3 class="text-2xl font-bold mb-2 text-blue-800">Selamat Datang, Pelanggan Setia!</h3>
                                 <p class="text-blue-600 mb-3">Anda dapat memesan tanpa login. Untuk fitur lengkap seperti riwayat pesanan dan reservasi meja, silakan daftar akun.</p>
                                 <div class="flex gap-2">
                                     <a href="{{ route('login') }}" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition">
@@ -31,7 +31,7 @@
                             </div>
                         @else
                             <h3 class="text-2xl font-bold mb-4">Selamat Datang, {{ $user->name }}!</h3>
-                        @endif
+                        @endguest
 
                         <!-- Tombol Aksi Pesan -->
                         <div class="mb-8 p-6 bg-red-50 rounded-lg border border-red-200 text-center">
@@ -101,7 +101,7 @@
                         </div>
 
                         <!-- Reservasi Meja (hanya untuk user login) -->
-                        @if(!$isGuest)
+                        @auth
                         <div class="mb-8">
                             <div class="flex justify-between items-center border-b pb-2 mb-4">
                                 <h4 class="text-xl font-semibold">Reservasi Meja</h4>
@@ -146,10 +146,10 @@
                                 </div>
                             @endisset
                         </div>
-                        @endif
+                        @endauth
 
                         <!-- Riwayat Pemesanan (hanya untuk user login) -->
-                        @if(!$isGuest)
+                        @auth
                             <div>
                                 <h4 class="text-xl font-semibold mb-4 border-b pb-2">Riwayat Pemesanan</h4>
                                 <div class="space-y-4">
@@ -194,7 +194,7 @@
                                     Daftar Sekarang
                                 </a>
                             </div>
-                        @endif
+                        @endguest
                     </div>
                 </div>
             </div>
@@ -275,9 +275,9 @@
                                         <div class="text-center py-8 text-gray-500 bg-green-50 rounded-lg">
                                             <i class="fas fa-check-circle fa-2x mb-2 text-green-500"></i>
                                             <p>Pesanan Anda telah selesai!</p>
-                                            @if($isGuest)
+                                            @guest
                                                 <p class="text-sm mt-2">Terima kasih telah memesan. Silakan lakukan pembayaran di kasir.</p>
-                                            @endif
+                                            @endguest
                                         </div>
                                     `;
                                     clearInterval(intervalId);

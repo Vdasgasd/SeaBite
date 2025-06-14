@@ -59,7 +59,7 @@
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    Rp {{ number_format($invoice->total_bayar, 0, ',', '.') }}
+                                    Rp {{ number_format($invoice->total_bayar, 0, ',', '.') }}zzz
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                     {{ $invoice->created_at->format('d/m/Y H:i') }}

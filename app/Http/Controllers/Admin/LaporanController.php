@@ -15,7 +15,7 @@ class LaporanController extends Controller
     {
         $startDate = $request->input('start_date', Carbon::now()->startOfMonth()->toDateString());
         $endDate = $request->input('end_date', Carbon::now()->endOfMonth()->toDateString());
-        $period = $request->input('period', 'monthly'); // daily, weekly, monthly
+        $period = $request->input('period', 'monthly');
 
         $query = Invoice::query()->with('kasir', 'pesanan');
         $query->whereBetween('waktu_pembayaran', [$startDate, Carbon::parse($endDate)->endOfDay()]);
@@ -24,7 +24,7 @@ class LaporanController extends Controller
         $totalPendapatan = $query->sum('total_bayar');
         $jumlahTransaksi = $query->count();
 
-        // Data untuk grafik berdasarkan periode
+
         $chartData = $this->getChartData($startDate, $endDate, $period);
 
         return view('admin.laporan.index', compact(
@@ -51,7 +51,7 @@ class LaporanController extends Controller
         $totalPendapatan = $query->sum('total_bayar');
         $jumlahTransaksi = $query->count();
 
-        // Data untuk grafik
+
         $chartData = $this->getChartData($startDate, $endDate, $period);
 
         $pdf = Pdf::loadView('admin.laporan.pdf', compact(
@@ -127,7 +127,7 @@ class LaporanController extends Controller
             $weekStart = $current->copy()->startOfWeek();
             $weekEnd = $current->copy()->endOfWeek();
 
-            // Batasi minggu terakhir sampai tanggal akhir
+
             if ($weekEnd->gt($end)) {
                 $weekEnd = $end->copy()->endOfDay();
             }
@@ -160,7 +160,7 @@ class LaporanController extends Controller
             $monthStart = $current->copy()->startOfMonth();
             $monthEnd = $current->copy()->endOfMonth();
 
-            // Batasi bulan terakhir sampai tanggal akhir
+
             if ($monthEnd->gt($end)) {
                 $monthEnd = $end->copy()->endOfDay();
             }

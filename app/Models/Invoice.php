@@ -18,7 +18,9 @@ class Invoice extends Model
         'kasir_id',
         'waktu_pembayaran',
         'metode_pembayaran',
-        'total_bayar'
+        'total_bayar',
+        'snap_token',
+        'status_pembayaran'
     ];
 
     protected $casts = [
