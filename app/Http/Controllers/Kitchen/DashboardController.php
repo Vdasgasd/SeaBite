@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Kitchen;
 
 use App\Http\Controllers\Controller;
 use App\Models\Pesanan;
-use App\Models\DetailPesanan;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller {
@@ -50,36 +49,5 @@ class DashboardController extends Controller {
 
 
 
-    public function showPesanan(Pesanan $pesanan) {
-        $pesanan->load(['meja', 'detailPesanan.menu.kategori', 'detailPesanan.metodeMasak']);
 
-        if (request()->expectsJson()) {
-            return response()->json([
-                'pesanan_id' => $pesanan->pesanan_id,
-                'waktu_pesanan' => $pesanan->waktu_pesanan,
-                'status_pesanan' => $pesanan->status_pesanan,
-                'total_harga' => $pesanan->total_harga,
-                'meja' => [
-                    'nomor_meja' => $pesanan->meja->nomor_meja
-                ],
-                'detail_pesanan' => $pesanan->detailPesanan->map(function ($detail) {
-                    return [
-                        'jumlah' => $detail->jumlah,
-                        'subtotal' => $detail->subtotal,
-                        'catatan' => $detail->catatan,
-                        'menu' => [
-                            'nama_menu' => $detail->menu->nama_menu,
-                            'kategori' => $detail->menu->kategori->nama_kategori ?? null
-                        ],
-                        'metode_masak' => $detail->metodeMasak ? [
-                            'nama_metode' => $detail->metodeMasak->nama_metode
-                        ] : null
-                    ];
-                })
-            ]);
-        }
-
-
-        return view('kitchen.detail', compact('pesanan'));
-    }
 }

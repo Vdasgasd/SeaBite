@@ -44,13 +44,11 @@
             const paymentActions = document.getElementById('payment-actions');
             const paymentLoading = document.getElementById('payment-loading');
 
-            // --- Handler untuk Pembayaran Tunai ---
             payTunaiButton.addEventListener('click', function(e) {
                 e.preventDefault();
                 handlePayment('tunai');
             });
 
-            // --- Handler untuk Pembayaran Midtrans ---
             payMidtransButton.addEventListener('click', function(e) {
                 e.preventDefault();
                 handlePayment('midtrans');
@@ -79,33 +77,26 @@
                         return;
                     }
 
-                    // Jika metode tunai, redirect berdasarkan respons
                     if (method === 'tunai') {
                         alert(data.message);
                         window.location.href = data.redirect_url;
                         return;
                     }
 
-                    // Jika metode midtrans, buka snap
                     window.snap.pay(data.snap_token, {
                         onSuccess: function(result){
-                            /* Anda bisa tambahkan notifikasi atau redirect di sini */
                             alert("Pembayaran berhasil!"); console.log(result);
-                            // Redirect ke halaman invoice setelah pembayaran berhasil
                             window.location.href = `/kasir/invoice/${result.order_id}`;
                         },
                         onPending: function(result){
-                            /* Anda bisa tambahkan notifikasi pending di sini */
                             alert("Menunggu pembayaran Anda!"); console.log(result);
                             showLoading(false);
                         },
                         onError: function(result){
-                            /* Anda bisa tambahkan notifikasi error di sini */
                             alert("Pembayaran gagal!"); console.log(result);
                             showLoading(false);
                         },
                         onClose: function(){
-                            /* Pelanggan menutup popup tanpa menyelesaikan pembayaran */
                             alert('Anda menutup popup pembayaran.');
                             showLoading(false);
                         }
